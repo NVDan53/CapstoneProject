@@ -44,7 +44,7 @@ function Login() {
       window.localStorage.setItem("user", JSON.stringify(data));
 
       // redirect
-      router.push("/");
+      router.push("/user");
     } catch (error) {
       toast.error(error.response.data);
       setLoading(false);

@@ -3,9 +3,9 @@ import axios from "axios";
 import { Context } from "../../context";
 import { useRouter } from "next/router";
 import { SyncOutlined } from "@ant-design/icons";
-import UserNav from "../nav/UserNav";
+import InstructorNav from "../nav/InstructorNav";
 
-const UserRoute = ({ children }) => {
+const InstructorRoute = ({ children }) => {
   //  state
   const [ok, setOk] = useState(false);
 
@@ -13,13 +13,12 @@ const UserRoute = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    fetchUser();
+    fetchInstructor();
   }, []);
 
-  const fetchUser = async () => {
+  const fetchInstructor = async () => {
     try {
-      const { data } = await axios("api/current-user");
-      //   console.log(data);
+      const { data } = await axios.post("/api/current-instructor");
       if (data.ok) setOk(true);
     } catch (error) {
       console.log("ERROR:", error);
@@ -39,7 +38,7 @@ const UserRoute = ({ children }) => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2">
-              <UserNav />
+              <InstructorNav />
             </div>
             <div className="col-md-10">{children}</div>
           </div>
@@ -49,4 +48,4 @@ const UserRoute = ({ children }) => {
   );
 };
 
-export default UserRoute;
+export default InstructorRoute;

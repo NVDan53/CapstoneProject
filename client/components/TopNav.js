@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Menu } from "antd";
+import clsx from "clsx";
 import {
   LoginOutlined,
   UserAddOutlined,
@@ -65,6 +66,29 @@ const TopNav = () => {
           <a>App</a>
         </Link>
       </Item>
+      {user &&
+        (user && user.role && user.role.includes("Instructor") ? (
+          <Item
+            key="/instructor/course/create"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<CarryOutOutlined />}
+          >
+            <Link href="/instructor/course/create">
+              <a>Create course</a>
+            </Link>
+          </Item>
+        ) : (
+          <Item
+            key="/user/become-instructor"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<TeamOutlined />}
+          >
+            <Link href="/user/become-instructor">
+              <a>Become instructor</a>
+            </Link>
+          </Item>
+        ))}
+
       {user === null && (
         <>
           <Item
@@ -88,6 +112,18 @@ const TopNav = () => {
         </>
       )}
 
+      {user && user.role && user.role.includes("Instructor") && (
+        <Item
+          key="/instructor"
+          onClick={(e) => setCurrent(e.key)}
+          icon={<TeamOutlined />}
+        >
+          <Link href="/instructor">
+            <a>Instructor</a>
+          </Link>
+        </Item>
+      )}
+
       {user !== null && (
         <SubMenu
           key="/logout"
@@ -99,11 +135,14 @@ const TopNav = () => {
             )
           }
           title={user && user.name}
-          className="float-right"
         >
           <ItemGroup>
             <Item key="/user">
-              <Link href="/user">
+              <Link
+                href={
+                  user.role.includes("Instructor") ? "/instructor" : "/user"
+                }
+              >
                 <a>Dashboard</a>
               </Link>
             </Item>
