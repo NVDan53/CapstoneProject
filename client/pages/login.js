@@ -72,6 +72,8 @@ function Login() {
       router.push("/");
     } catch (error) {
       console.log(error.response.data.msg);
+      toast(error.response.data.msg);
+      setLoading(false);
     }
   };
   return (
