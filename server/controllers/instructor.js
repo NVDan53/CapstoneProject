@@ -1,4 +1,5 @@
 import User from "../models/user";
+import Course from "../models/course";
 import { hashPassword, comparePassword } from "../utils/auth";
 import jwt from "jsonwebtoken";
 import queryString from "query-string";
@@ -78,5 +79,17 @@ export const currentInstructor = async (req, res) => {
     res.json({ ok: true });
   } catch (error) {
     console.log("ERROR", error);
+  }
+};
+
+export const instructorCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({ instructor: req.user._id })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.json(courses);
+  } catch (error) {
+    console.log("error:", error);
   }
 };

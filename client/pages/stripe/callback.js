@@ -7,6 +7,7 @@ import axios from "axios";
 function Callback() {
   const {
     state: { user },
+    dispatch,
   } = useContext(Context);
 
   useEffect(() => {

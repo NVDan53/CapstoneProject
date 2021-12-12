@@ -66,7 +66,7 @@ const courseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    lesson: [lessonSchema],
+    lessons: [lessonSchema],
   },
   {
     timestamps: true,
