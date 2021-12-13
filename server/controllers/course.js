@@ -1,6 +1,7 @@
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
 import slugify from "slugify";
+import { readFileSync } from "fs";
 
 import Course from "../models/course";
 
@@ -103,6 +104,62 @@ export const read = async (req, res) => {
       .exec();
     if (!course) return res.status(400).send("No course");
     res.json(course);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const uploadVideo = async (req, res) => {
+  try {
+    const { video } = req.files;
+
+    if (!video) return res.status(400).send("No video");
+
+    // video params
+    const params = {
+      Bucket: "stress-bucket",
+      Key: `${nanoid()}.${video.type.split("/")[1]}`,
+      Body: readFileSync(video.path),
+      ACL: "public-read",
+      ContentType: video.type,
+    };
+
+    // upload to S3
+    S3.upload(params, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
+      }
+
+      console.log(data);
+      res.send(data);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeVideo = async (req, res) => {
+  try {
+    const { video } = req.body;
+    console.log("VIDEO =========>", video);
+
+    if (!video) return res.status(400).send("No video");
+
+    // video params
+    const params = {
+      Bucket: video.Bucket,
+      Key: video.Key,
+    };
+
+    // upload to S3
+    S3.deleteObject(params, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
+      }
+      res.send({ ok: true });
+    });
   } catch (error) {
     console.log(error);
   }

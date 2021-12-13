@@ -26,6 +26,6 @@ router.post("/google_login", googleLogin);
 router.get("/send_email", sendTestEmail);
 
 router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
+router.post("/reset-password", requireSignin, resetPassword);
 
 module.exports = router;
